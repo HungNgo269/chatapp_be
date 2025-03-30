@@ -65,7 +65,8 @@ export const login = async (req: Request, res: Response) => {
     if (!user) {
       return res.status(400).json({ message: "Can't find email or wrong password" })
     }
-    const isPasswordCorrect = bcrypt.compare(password, user.password)
+    const isPasswordCorrect = await bcrypt.compare(password, user.password)
+    //do hàm trên trả về 1 promist chứ không phải là 1 giá trị
     if (!isPasswordCorrect) {
       return res.status(400).json({ message: "Can't find email or wrong password" })
     }
