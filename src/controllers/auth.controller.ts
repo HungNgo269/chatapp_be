@@ -126,7 +126,11 @@ export const updateProfile = async (req: Request, res: Response) => {
 
 export const checkAuth = async (req: Request, res: Response) => {
   try {
-    res.status(200).json(req.user)
+    const user = req.user
+    if (!user) {
+      return res.status(401).json({ message: 'User not authenticated' })
+    }
+    res.status(200).json(user)
   } catch (error) {
     console.log('Error in checkAuth controller')
     res.status(500).json({ message: 'Error in checkAuth controller' })

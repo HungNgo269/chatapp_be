@@ -7,11 +7,7 @@ if (!JWT_SECRET) {
   throw new Error('JWT_SECRET is not defined in environment variables')
 }
 
-interface AuthRequest extends Request {
-  user?: typeof User.prototype
-}
-
-export const protectedRoute = async (req: AuthRequest, res: Response, next: NextFunction) => {
+export const protectedRoute = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const token = req.cookies.jwt
     if (!token) {
@@ -25,7 +21,6 @@ export const protectedRoute = async (req: AuthRequest, res: Response, next: Next
     if (!user) {
       return res.status(404).json({ message: 'User not found' })
     }
-
     req.user = user
     next()
   } catch (error) {
