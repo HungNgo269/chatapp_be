@@ -1,9 +1,12 @@
 import { Date, Document } from 'mongoose'
 
 interface IUser extends Document {
-  full_name: string
+  first_name: string
+  last_name: string
   username: string
   password: string
+  day_of_birth: Date
+  gender: 'male' | 'female' | 'other'
   email: string
   phone_number?: string
   profile_picture?: string
