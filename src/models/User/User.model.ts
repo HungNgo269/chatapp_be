@@ -5,7 +5,10 @@ const userSchema = new Schema<IUser>({
   password: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   phone_number: { type: String, unique: true, sparse: true }, // sparse cho phép null nhưng vẫn unique nếu có giá trị
-  full_name: { type: String, required: true },
+  first_name: { type: String, required: true },
+  last_name: { type: String, required: true },
+  day_of_birth: { type: Date, required: true },
+  gender: { type: String, enum: ['male', 'female', 'other'], required: true },
   profile_picture: { type: String },
   created_at: { type: Date, default: Date.now },
   updated_at: { type: Date, default: Date.now }
