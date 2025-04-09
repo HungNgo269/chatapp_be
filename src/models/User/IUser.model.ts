@@ -7,7 +7,7 @@ interface IUser extends Document {
   password: string
   day_of_birth: Date
   gender: 'male' | 'female' | 'other'
-  email: string
+  email?: string
   phone_number?: string
   profile_picture?: string
   created_at: Date

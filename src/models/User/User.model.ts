@@ -3,7 +3,7 @@ import IUser from './IUser.model'
 const userSchema = new Schema<IUser>({
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
+  email: { type: String, unique: true, sparse: true },
   phone_number: { type: String, unique: true, sparse: true }, // sparse cho phép null nhưng vẫn unique nếu có giá trị
   first_name: { type: String, required: true },
   last_name: { type: String, required: true },

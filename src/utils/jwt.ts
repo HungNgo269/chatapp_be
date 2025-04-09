@@ -8,15 +8,15 @@ if (!mySecretKey) {
 }
 
 const generateToken = (userID: string | number, res: Response): string => {
-  const token = jwt.sign({ userID }, mySecretKey, { expiresIn: '7d' })
-
-  res.cookie('jwt', token, {
+  const accessToken = jwt.sign({ userID }, mySecretKey, { expiresIn: '5m' })
+  const refreshToken = jwt.sign({ userID }, mySecretKey, { expiresIn: '7d' })
+  res.cookie('refreshToken', refreshToken, {
     httpOnly: true, // Prevent XSS access via JavaScript
     secure: process.env.NODE_ENV === 'production', // Secure only in production
     sameSite: 'strict', // CSRF protection
     maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days in milliseconds
   })
-  return token
+  return accessToken //chỉ trả về accesstoken trong body
 }
 
 export default generateToken
