@@ -1,10 +1,15 @@
 import { Document, Types } from 'mongoose'
 
 interface IConversation extends Document {
-  type: 'private' | 'group'
+  type: 'direct' | 'group'
   name?: string
+  avatar?: string
   participants: Types.ObjectId[]
-  created_at: Date
+  lastMessages?: Types.ObjectId
+  createdBy?: Types.ObjectId
+  admin?: Types.ObjectId[]
+  created_at?: Date
+  updated_at?: Date
 }
 
 export default IConversation

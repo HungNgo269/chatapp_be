@@ -1,4 +1,4 @@
-import { Date, Document } from 'mongoose'
+import { Date, Document, Schema } from 'mongoose'
 
 interface IUser extends Document {
   first_name: string
@@ -9,8 +9,11 @@ interface IUser extends Document {
   gender: 'male' | 'female' | 'other'
   email?: string
   phone_number?: string
-  profile_picture?: string
-  created_at: Date
-  updated_at: Date
+  avatar?: string
+  status: 'online' | 'offline' | 'banned'
+  contact: Schema.Types.ObjectId[] //1 mảng các "id friends"
+  lastSeen: Date
+  created_at?: Date
+  updated_at?: Date
 }
 export default IUser

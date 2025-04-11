@@ -130,7 +130,7 @@ export const login = async (req: LoginRequest, res: Response) => {
       last_name: user.last_name,
       day_of_birth: user.day_of_birth.OptionsConstructor,
       gender: user.gender,
-      profile_picture: user.profile_picture,
+      avatar: user.avatar,
       created_at: user.created_at,
       updated_at: user.updated_at,
       accessToken

@@ -17,7 +17,7 @@ export const protectedRoute = async (req: Request, res: Response, next: NextFunc
     const decoded = jwt.verify(token, JWT_SECRET)
 
     const user = await User.findById(decoded.userID).select('-password')
-    //loại bỏ trường password khỏi tìm kiếm để tăng bảo mật => ko trả về pass nè
+    //loại bỏ trường password khỏi tìm kiếm để tăng bảo mật => ko trả về pass về
     if (!user) {
       return res.status(404).json({ message: 'User not found' })
     }

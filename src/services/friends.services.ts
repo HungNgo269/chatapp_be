@@ -1,0 +1,1 @@
+export const getFriendList = async()
