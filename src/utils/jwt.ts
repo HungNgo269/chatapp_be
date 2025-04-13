@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken'
+import jwt, { JwtPayload } from 'jsonwebtoken'
 import { Response } from 'express'
 import dotenv from 'dotenv'
 dotenv.config()
@@ -7,7 +7,7 @@ if (!mySecretKey) {
   throw new Error('JWT_SECRET is not defined in environment variables.')
 }
 
-const generateToken = (userID: string | number, res: Response): string => {
+export const generateToken = (userID: string | number, res: Response): string => {
   const accessToken = jwt.sign({ userID }, mySecretKey, { expiresIn: '5m' })
   const refreshToken = jwt.sign({ userID }, mySecretKey, { expiresIn: '7d' })
   res.cookie('refreshToken', refreshToken, {
@@ -18,5 +18,7 @@ const generateToken = (userID: string | number, res: Response): string => {
   })
   return accessToken //chỉ trả về accesstoken trong body
 }
-
-export default generateToken
+export const verifyToken = (token: string) => {
+  const decoded = jwt.verify(token, mySecretKey) as JwtPayload
+  return decoded
+}

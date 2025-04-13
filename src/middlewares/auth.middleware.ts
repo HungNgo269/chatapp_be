@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken'
 import { Request, Response, NextFunction } from 'express'
 import User from '~/models/User/User.model'
+import { verifyToken } from '~/utils/jwt'
 
 const JWT_SECRET = process.env.JWT_SECRET
 if (!JWT_SECRET) {
@@ -9,12 +10,12 @@ if (!JWT_SECRET) {
 
 export const protectedRoute = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const token = req.cookies.jwt
+    const token = req.cookies.refreshToken
     if (!token) {
       return res.status(401).json({ message: 'Unauthorized - No Token Provided' })
     }
 
-    const decoded = jwt.verify(token, JWT_SECRET)
+    const decoded = await verifyToken(token)
 
     const user = await User.findById(decoded.userID).select('-password')
     //loại bỏ trường password khỏi tìm kiếm để tăng bảo mật => ko trả về pass về

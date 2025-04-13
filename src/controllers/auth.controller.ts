@@ -1,32 +1,13 @@
 import User from '~/models/User/User.model'
 import bcrypt from 'bcryptjs'
-import generateToken from '~/utils/jwt'
+import { generateToken } from '~/utils/jwt'
 import { Request, Response } from 'express'
 import cloudinary from '~/lib/cloudiary'
 import jwt from 'jsonwebtoken'
-import { profile } from 'console'
 
 const mySecretKey = process.env.JWT_SECRET
-interface SignupRequest extends Request {
-  body: {
-    username: string
-    password: string
-    first_name: string
-    last_name: string
-    day_of_birth: Date | string
-    gender: 'male' | 'female' | 'other'
-    identifier: string
-  }
-}
 
-interface LoginRequest extends Request {
-  body: {
-    identifier: string
-    password: string
-  }
-}
-
-export const signup = async (req: SignupRequest, res: Response) => {
+export const signup = async (req: Request, res: Response) => {
   const { username, password, first_name, last_name, day_of_birth, gender, identifier } = req.body
   try {
     // Kiểm tra các trường bắt buộc
@@ -195,7 +176,7 @@ export const refreshToken = async (req: Request, res: Response) => {
 
   try {
     // Add type assertion for decoded
-    const decoded = jwt.verify(refreshToken, mySecretKey) as { userID: string }
+    const decoded = await verify
     const accessToken = jwt.sign({ userID: decoded.userID }, mySecretKey, { expiresIn: '5m' })
 
     // Return the new access token
