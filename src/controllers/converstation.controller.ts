@@ -5,8 +5,18 @@ import { createPrivateConversation, getMessages, sendMessage } from '~/services/
 export const getUserForSideBar = async (req: Request, res: Response) => {
   try {
     const loggedinUserId = req.user?._id
-    const filteredUser = await User.find({ _id: { $ne: loggedinUserId } }).select('-password')
-    res.status(200).json(filteredUser)
+
+    // Tìm user đang đăng nhập và populate danh sách bạn bè (contact)
+    const friendList = await User.findById(loggedinUserId).populate({
+      path: 'contact',
+      select: '-password' // không lấy password của bạn bè
+    })
+
+    if (!friendList) {
+      return res.status(404).json({ message: 'User not found' })
+    }
+
+    res.status(200).json(friendList)
   } catch (error) {
     res.status(500).json({ message: 'Error creating getUserForSideBar', error })
   }

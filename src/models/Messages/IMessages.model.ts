@@ -8,7 +8,7 @@ interface IMessage extends Document {
   timestamp: Date
   attachments?: string
   status: 'TYPING' | 'SENDING' | 'DELIVERED' | 'READ'
-  read_by: Types.ObjectId[]
+  read_by?: Types.ObjectId[]
   created_at?: Date
   updated_at?: Date
 }

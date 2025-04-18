@@ -8,7 +8,7 @@ if (!mySecretKey) {
 }
 
 export const generateToken = (userID: string | number, res: Response): string => {
-  const accessToken = jwt.sign({ userID }, mySecretKey, { expiresIn: '5m' })
+  const accessToken = jwt.sign({ userID }, mySecretKey, { expiresIn: '10s' })
   const refreshToken = jwt.sign({ userID }, mySecretKey, { expiresIn: '7d' })
   res.cookie('refreshToken', refreshToken, {
     httpOnly: true, // Prevent XSS access via JavaScript

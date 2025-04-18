@@ -12,6 +12,8 @@ interface IUser extends Document {
   avatar?: string
   status: 'online' | 'offline' | 'banned'
   contact: Schema.Types.ObjectId[] //1 mảng các "id friends"
+  friend_request_send: Schema.Types.ObjectId[]
+  friend_request_receive: Schema.Types.ObjectId[]
   lastSeen: Date
   created_at?: Date
   updated_at?: Date

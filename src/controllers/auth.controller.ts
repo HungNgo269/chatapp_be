@@ -1,6 +1,6 @@
 import User from '~/models/User/User.model'
 import bcrypt from 'bcryptjs'
-import { generateToken } from '~/utils/jwt'
+import { generateToken, verifyToken } from '~/utils/jwt'
 import { Request, Response } from 'express'
 import cloudinary from '~/lib/cloudiary'
 import jwt from 'jsonwebtoken'
@@ -100,20 +100,10 @@ export const login = async (req: LoginRequest, res: Response) => {
     if (!isPasswordCorrect) {
       return res.status(401).json({ message: 'Email, số điện thoại hoặc mật khẩu không đúng' })
     }
-
+    const { password: _, ...userWithoutPassword } = user.toObject()
     const accessToken = generateToken(user._id.toString(), res)
     res.status(200).json({
-      _id: user._id,
-      username: user.username,
-      email: user.email,
-      phone_number: user.phone_number,
-      first_name: user.first_name,
-      last_name: user.last_name,
-      day_of_birth: user.day_of_birth.OptionsConstructor,
-      gender: user.gender,
-      avatar: user.avatar,
-      created_at: user.created_at,
-      updated_at: user.updated_at,
+      user: userWithoutPassword,
       accessToken
     })
   } catch (error) {
@@ -165,7 +155,7 @@ export const checkAuth = async (req: Request, res: Response) => {
   }
 }
 export const refreshToken = async (req: Request, res: Response) => {
-  const refreshToken = req.cookies.refreshToken
+  const token = req.cookies.refreshToken
 
   // Debug: log the cookies
   console.log('All cookies:', req.cookies)
@@ -176,8 +166,8 @@ export const refreshToken = async (req: Request, res: Response) => {
 
   try {
     // Add type assertion for decoded
-    const decoded = await verify
-    const accessToken = jwt.sign({ userID: decoded.userID }, mySecretKey, { expiresIn: '5m' })
+    const decoded = await verifyToken(token)
+    const accessToken = jwt.sign({ userID: decoded.userID }, mySecretKey, { expiresIn: '10s' })
 
     // Return the new access token
     res.status(200).json({ accessToken })

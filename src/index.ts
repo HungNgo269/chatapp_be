@@ -1,19 +1,14 @@
 import express from 'express'
-import http from 'http'
 import cors from 'cors'
 import dotenv from 'dotenv'
 import cookieParser from 'cookie-parser'
 import authRoutes from './routes/auth.route'
+import contactRoutes from './routes/contact.route'
 import conversationRoutes from './routes/conversation.route'
-import { SocketService } from './services/socket.services'
 import connectDB from './lib/db'
+import { app, server } from './lib/socket'
 
 dotenv.config()
-
-const app = express()
-const server = http.createServer(app)
-
-const socketService = new SocketService(server)
 
 app.use(express.json())
 app.use(cookieParser())
@@ -25,6 +20,7 @@ app.use(
 )
 
 app.use('/api/auth', authRoutes)
+app.use('/api/contact', contactRoutes)
 app.use('/api/conversations', conversationRoutes)
 
 app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
@@ -35,7 +31,6 @@ app.use((err: any, req: express.Request, res: express.Response, next: express.Ne
 async function startServer() {
   try {
     await connectDB()
-
     const PORT = process.env.PORT || 3000
     server.listen(PORT, () => {
       console.log(`Server đang chạy trên cổng ${PORT}`)

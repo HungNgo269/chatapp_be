@@ -13,6 +13,8 @@ const userSchema = new Schema<IUser>(
     avatar: { type: String },
     status: { type: String, enum: ['online', 'offline', 'banned'] },
     contact: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+    friend_request_send: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+    friend_request_receive: [{ type: Schema.Types.ObjectId, ref: 'User' }],
     lastSeen: { type: Date, defaul: Date.now }
   },
   { timestamps: true }
